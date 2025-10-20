@@ -13,7 +13,9 @@ SPI write only
 ## How to test
 
 yababababba
+abbababbba
 
 ## External hardware
 
 a lot of stuff
+maybe a little bit of stuff
