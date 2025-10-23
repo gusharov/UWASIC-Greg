@@ -3,7 +3,7 @@
 
 
 module spi (  
-    input sclk, sdi, cs,    
+    input clk, sdi, cs,    
     output sdo
 );
 
