@@ -36,12 +36,14 @@ module tt_um_uwasic_onboarding_Gregory_Usharov (
       .out({uio_out, uo_out})
     );
 
-
+  wire nuuh;
   spi spi_inst(
-    .clk(clk),
-    .sdi()
-  )
-  wire _unused = &{ena, clk, rst_n, ui_in[7:3], uio_in, 1'b0};
+    .clk(ui_in[2]),
+    .sdi(ui_in[1]),
+    .cs(ui_in[0]),
+    .sdo(nuuh)
+  );
+  wire _unused = &{ena, clk, rst_n, ui_in[7:3], uio_in, 1'b0, nuuh};
 
 
   // All output pins must be assigned. If not used, assign to 0.
