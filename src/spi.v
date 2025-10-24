@@ -3,8 +3,7 @@
 
 
 module spi (  
-    input clk, sclk, sdi, cs, 
-    input reg rst_n, 
+    input clk, sclk, sdi, cs, rst_n, 
     output sdo,
     output reg [7:0] reg1,
     output reg [7:0] reg2,
@@ -37,13 +36,10 @@ always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         transaction_done <= 1'b0;
         copying_done <= 1'b0;
-        data <= 15'b0;
+        data <= 16'b0;
         counter <= 8'b0;
     end
-    else if(syncs2 == 1'b0) begin
-        transaction_done <= 1'b0;
-    end
-    else if(copying_done == 1'b1)begin
+    if(copying_done == 1'b1)begin
         case (data[14:8]) 
             1:reg1 <= data[7:0];
             2:reg2 <= data[7:0];
@@ -56,17 +52,21 @@ always @(posedge clk or negedge rst_n) begin
         data <= 15'b0;
         counter <= 8'b0;
     end
-    else if(transaction_done) begin
-        if(counter == 16 and data[15] == 1 and data[14:8] < 5) begin
+    if(transaction_done) begin
+        if(counter == 16 && data[15] == 1 && data[14:8] < 5) begin
         //begin other stuff
         copying_done <= 1'b1;
         end
         else begin
             transaction_done <= 1'b0;
             copying_done <= 1'b0;
-            data <= 15'b0;
+            data <= 16'b0;
             counter <= 8'b0;
         end
+    end
+    if()
+    if(syncs2 == 1'b0) begin
+        transaction_done <= 1'b0;
     end
     else begin
         transaction_done <= 1'b1;
