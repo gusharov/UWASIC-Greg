@@ -24,11 +24,7 @@ reg transaction_done;
 reg copying_done;
 reg [15:0] data;
 reg [7:0] counter;
-reg [7:0] reg1;
-reg [7:0] reg2;
-reg [7:0] reg3;
-reg [7:0] reg4;
-reg [7:0] reg5;
+
 
 dflop clk1(.D(sclk),.clk(clk),.Q(synclock1));
 dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2)); 
@@ -60,6 +56,18 @@ always @(posedge clk or negedge rst_n) begin
         data <= 15'b0;
         counter <= 8'b0;
     end
+    else if(transaction_done) begin
+        if(counter == 16 and data[15] == 1 and data[14:8] < 5) begin
+        //begin other stuff
+        copying_done <= 1'b1;
+        end
+        else begin
+            transaction_done <= 1'b0;
+            copying_done <= 1'b0;
+            data <= 15'b0;
+            counter <= 8'b0;
+        end
+    end
     else begin
         transaction_done <= 1'b1;
     end
@@ -73,19 +81,6 @@ always @(negedge sclk) begin
     end
 end
 
-always@(posedge transaction_done) begin
-    if(counter == 16 and data[15] == 1 and data[14:8] < 5) begin
-        //begin other stuff
-        copying_done = 1'b1;
-    end
-    else begin
-        transaction_done <= 1'b0;
-        copying_done <= 1'b0;
-        data <= 15'b0;
-        counter <= 8'b0;
-    end
-
-end
 
 endmodule
 
