@@ -49,10 +49,10 @@ always @(posedge clk or negedge rst_n) begin
         endcase
         transaction_done <= 1'b0;
         copying_done <= 1'b0;
-        data <= 15'b0;
+        data <= 16'b0;
         counter <= 8'b0;
     end
-    if(transaction_done) begin
+    if(transaction_done == 1'b1) begin
         if(counter == 16 && data[15] == 1 && data[14:8] < 5) begin
         //begin other stuff
         copying_done <= 1'b1;
@@ -64,7 +64,6 @@ always @(posedge clk or negedge rst_n) begin
             counter <= 8'b0;
         end
     end
-    if()
     if(syncs2 == 1'b0) begin
         transaction_done <= 1'b0;
     end
