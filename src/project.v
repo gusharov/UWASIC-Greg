@@ -19,11 +19,11 @@ module tt_um_uwasic_onboarding_Gregory_Usharov (
 );
 
 
-  wire [7:0] en_reg_out_7_0;
-  wire [7:0] en_reg_out_15_8;
-  wire [7:0] en_reg_pwm_7_0;
-  wire [7:0] en_reg_pwm_15_8;
-  wire [7:0] pwm_duty_cycle;
+    wire [7:0] en_reg_out_7_0;
+    wire [7:0] en_reg_out_15_8;
+    wire [7:0] en_reg_pwm_7_0;
+    wire [7:0] en_reg_pwm_15_8;
+    wire [7:0] pwm_duty_cycle;
 
   pwm_peripheral pwm_peripheral_inst (
       .clk(clk),
@@ -38,10 +38,17 @@ module tt_um_uwasic_onboarding_Gregory_Usharov (
 
   wire nuuh;
   spi spi_inst(
-    .clk(ui_in[2]),
+    .clk(clk)
+    .sclk(ui_in[2]),
     .sdi(ui_in[1]),
     .cs(ui_in[0]),
-    .sdo(nuuh)
+    .sdo(nuuh),
+    .rst_n(rst_n),
+    .reg1(en_reg_out_7_0),
+    .reg2(en_reg_out_15_8),
+    .reg3(en_reg_pwm_7_0),
+    .reg4(en_reg_pwm_15_8),
+    .reg5(pwm_duty_cycle)
   );
   wire _unused = &{ena, clk, rst_n, ui_in[7:3], uio_in, 1'b0, nuuh};
 
