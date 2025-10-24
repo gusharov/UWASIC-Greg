@@ -86,7 +86,7 @@ endmodule
 module dflop (
     input  D,     
     input clk,    
-    output Q
+    output reg Q
 );
 always @(posedge clk) begin
     Q <= D;
