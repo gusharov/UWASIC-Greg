@@ -39,7 +39,7 @@ always @(posedge clk or negedge rst_n) begin
         data <= 16'b0;
         counter <= 8'b0;
     end
-    if(copying_done == 1'b1)begin
+    else if(copying_done == 1'b1)begin
         case (data[14:8]) 
             1:reg1 <= data[7:0];
             2:reg2 <= data[7:0];
@@ -52,7 +52,7 @@ always @(posedge clk or negedge rst_n) begin
         data <= 16'b0;
         counter <= 8'b0;
     end
-    if(transaction_done == 1'b1) begin
+    else if(transaction_done == 1'b1) begin
         if(counter == 16 && data[15] == 1 && data[14:8] < 5) begin
         //begin other stuff
         copying_done <= 1'b1;
@@ -64,7 +64,7 @@ always @(posedge clk or negedge rst_n) begin
             counter <= 8'b0;
         end
     end
-    if(syncs2 == 1'b0) begin
+    else if(syncs2 == 1'b0) begin
         transaction_done <= 1'b0;
     end
     else begin
