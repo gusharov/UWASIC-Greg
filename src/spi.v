@@ -41,8 +41,8 @@ always @(posedge clk or negedge rst_n) begin
         counter <= 8'b0;
         pastclk <= 1'b0;
     end
-    else if(pastclk == 1 && synclock2 == 0) begin
-        if(syncs2 == 1'b0) begin
+    else if(syncs2 == 1'b0) begin
+        if(pastclk == 1'b1 && synclock2 == 1'b0) begin
         data <= {data[14:0],da2};
         counter <= counter + 1;
         end
