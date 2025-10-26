@@ -24,7 +24,7 @@ reg copying_done;
 reg [15:0] data;
 reg [7:0] counter;
 reg pastclk;
-
+assign sdo 1'b0;
 
 dflop clk1(.D(sclk),.clk(clk),.Q(synclock1));
 dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2)); 
