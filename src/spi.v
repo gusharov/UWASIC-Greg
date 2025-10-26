@@ -78,7 +78,7 @@ always @(posedge clk or negedge rst_n) begin
     else begin
         transaction_done <= 1'b1;
     end
-    g
+    
 end
 
 endmodule
