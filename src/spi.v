@@ -41,12 +41,6 @@ always @(posedge clk or negedge rst_n) begin
         counter <= 8'b0;
         pastclk <= 1'b0;
     end
-    else if(syncs2 == 1'b0) begin
-        if(pastclk == 1'b1 && synclock2 == 1'b0) begin
-        data <= {data[14:0],da2};
-        counter <= counter + 1;
-        end
-    end
     else if(copying_done == 1'b1)begin
         case (data[14:8]) 
             1:reg1 <= data[7:0];
