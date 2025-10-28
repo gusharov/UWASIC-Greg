@@ -21,7 +21,7 @@ wire syncs1;
 wire syncs2;
 reg transaction_done;
 reg checking_done;
-reg sampling_now;
+reg sampling_now;   
 reg [15:0] data;
 reg [7:0] counter;
 reg pastclk;
