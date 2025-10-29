@@ -126,8 +126,8 @@ module specialdflop (
 );
 always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
-        Q <= 1'b0;
-        past <= 1'b0;
+        Q <= 1;
+        past <= 1;
     end
     else begin
         past <= Q;
