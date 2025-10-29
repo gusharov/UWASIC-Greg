@@ -39,9 +39,9 @@ module tt_um_uwasic_onboarding_Gregory_Usharov (
   wire nuuh;
   spi spi_inst(
     .clk(clk),
-    .sclk(ui_in[2]),
+    .sclk(ui_in[0]),
     .sdi(ui_in[1]),
-    .cs(ui_in[0]),
+    .cs(ui_in[2]),
     .sdo(nuuh),
     .rst_n(rst_n),
     .reg1(en_reg_out_7_0),
