@@ -105,7 +105,7 @@ module dflop (
     input rst_n,    
     output reg Q
 );
-always @(posedge clk or negedge reset_n) begin
+always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         Q <= 1'b0;
     end
@@ -124,7 +124,7 @@ module specialdflop (
     output reg Q,
     output reg past
 );
-always @(posedge clk or negedge reset_n) begin
+always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         Q <= 1'b0;
         past <= 1'b0;
