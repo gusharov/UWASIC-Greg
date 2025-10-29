@@ -27,12 +27,12 @@ reg [7:0] counter;
 reg pastclk;
 assign sdo = 1'b0;
 
-dflop clk1(.D(sclk),.clk(clk),.Q(synclock1));
-specialdflop clk2(.D(synclock1),.clk(clk),.Q(synclock2), .past(pastclk)); 
-dflop d1(.D(sdi),.clk(synclock2),.Q(da1));
-dflop d2(.D(da1),.clk(synclock2),.Q(da2)); 
-dflop cs1(.D(cs),.clk(synclock2),.Q(syncs1));
-dflop cs2(.D(syncs1),.clk(synclock2),.Q(syncs2)); 
+dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
+specialdflop clk2(.D(synclock1),.clk(clk),.Q(synclock2), .past(pastclk),.rst_n(rst_n)); 
+dflop d1(.D(sdi),.clk(synclock2),.Q(da1),.rst_n(rst_n));
+dflop d2(.D(da1),.clk(synclock2),.Q(da2),.rst_n(rst_n)); 
+dflop cs1(.D(cs),.clk(synclock2),.Q(syncs1),.rst_n(rst_n));
+dflop cs2(.D(syncs1),.clk(synclock2),.Q(syncs2),.rst_n(rst_n)); 
 
 always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
@@ -101,11 +101,17 @@ endmodule
 
 module dflop (
     input  D,     
-    input clk,    
+    input clk,
+    input rst_n,    
     output reg Q
 );
-always @(posedge clk) begin
-    Q <= D;
+always @(posedge clk or negedge reset_n) begin
+    if(!rst_n) begin
+        Q <= 1'b0;
+    end
+    else begin
+        Q <= D;
+    end
 end
     
 endmodule
@@ -114,12 +120,19 @@ endmodule
 module specialdflop (
     input  D,     
     input clk,    
+    input rst_n,
     output reg Q,
     output reg past
 );
-always @(posedge clk) begin
-    past <= Q;
-    Q <= D;
+always @(posedge clk or negedge reset_n) begin
+    if(!rst_n) begin
+        Q <= 1'b0;
+        past <= 1'b0;
+    end
+    else begin
+        past <= Q;
+        Q <= D;
+    end
 end
     
 endmodule
