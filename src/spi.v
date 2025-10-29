@@ -42,6 +42,11 @@ always @(posedge clk or negedge rst_n) begin
         data <= 16'b0;
         counter <= 8'b0;
         sampling_now <= 1'b0;
+        reg1 <= 8'b0;
+        reg2 <= 8'b0;
+        reg3 <= 8'b0;
+        reg4 <= 8'b0;
+        reg5 <= 8'b0;
     end
     else if(checking_done == 1'b1)begin
         //after data analyzed, copy it into the registers
