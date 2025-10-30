@@ -25,11 +25,10 @@ reg checking_done;
 reg sampling_now;   
 reg [15:0] data;
 reg [7:0] counter;
-reg pastclk;
 assign sdo = 1'b0;
 
 dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
-specialdflop clk2(.D(synclock1),.clk(clk),.Q(synclock2), .past(pastclk),.rst_n(rst_n)); 
+dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(clk),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(clk),.Q(da2),.rst_n(rst_n)); 
 dflop d3(.D(da2),.clk(sclk),.Q(da3),.rst_n(rst_n));
@@ -81,7 +80,7 @@ always @(posedge clk or negedge rst_n) begin
             sampling_now <= 1'b0;
         end
     end
-    else if(sampling_now == 1'b1 && syncs2 == 1'b0 && pastclk == 1'b1 && synclock2 == 1'b0) begin
+    else if(sampling_now == 1'b1 && syncs2 == 1'b0 && synclock1 == 1'b1 && synclock2 == 1'b0) begin
         data <= {data[14:0],da3};
         counter <= counter + 1;
     end
@@ -119,22 +118,3 @@ end
 endmodule
 
 
-module specialdflop (
-    input  D,     
-    input clk,    
-    input rst_n,
-    output reg Q,
-    output reg past
-);
-always @(posedge clk or negedge rst_n) begin
-    if(!rst_n) begin
-        Q <= 1;
-        past <= 1;
-    end
-    else begin
-        past <= Q;
-        Q <= D;
-    end
-end
-    
-endmodule
