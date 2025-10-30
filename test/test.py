@@ -236,13 +236,13 @@ async def test_pwm_duty(dut):
     #sets to 0, now check for 0
     send_spi_transaction(dut,1,0x04,0x00)
     await ClockCycles(dut.clk, 30000)
-    for 100 in period:
+    for i in range(int(period/100)):
         assert dut.uo_out[0].value == 0, f"PWM off, Expected 0 but got 1"
 
     send_spi_transaction(dut,1,0x04,0xFF)
     await ClockCycles(dut.clk, 30000)
-    for 100 in period:
-        assert dut.uo_out[0].value == 1, f"PWM off, Expected 0 but got 1"    
+    for i in range(int(period/100)):
+        assert dut.uo_out[0].value == 1, f"PWM off, Expected 1 but got 0"    
     
     dut._log.info("PWM Duty Cycle test completed successfully")
 #need to make sure 3khz freuncy, and output matches the value in register 0x04 +-/1%
