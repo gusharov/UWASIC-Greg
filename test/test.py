@@ -233,12 +233,12 @@ async def test_pwm_duty(dut):
 
     #set the values for 0 50 and 100 % with your own spi transactions lol
     #sets to 0, now check for 0
-    send_spi_transaction(dut,1,0x04,0x00)
+    await send_spi_transaction(dut,1,0x04,0x00)
     await ClockCycles(dut.clk, 30000)
     for i in range(int(period/100)):
         assert dut.uo_out[0].value == 0, "PWM off, Expected 0 but got 1"
 
-    send_spi_transaction(dut,1,0x04,0xFF)
+    await send_spi_transaction(dut,1,0x04,0xFF)
     await ClockCycles(dut.clk, 30000)
     for i in range(int(period/100)):
         assert dut.uo_out[0].value == 1, "PWM off, Expected 1 but got 0"    
