@@ -188,21 +188,21 @@ async def test_pwm_duty(dut):
     await ClockCycles(dut.clk, 5)
     dut._log.info("Finished Reset")
     dut._log.info("Checking Duty Cycle")
-    await RisingEdge(dut.out)
+    await RisingEdge(dut.dut.uo_out[0])
     t_rising_edge1 = cocotb.utils.get_sim_time(units="ns")
     await RisingEdge(dut.out)
     t_rising_edge2 = cocotb.utils.get_sim_time(units="ns")
     period = t_rising_edge2 - t_rising_edge1
-    await RisingEdge(dut.out)
+    await RisingEdge(dut.dut.uo_out[0])
     t_rising_edge1 = cocotb.utils.get_sim_time(units="ns")
-    await cocotb.utils.FallingEdge(dut.out)
+    await cocotb.utils.FallingEdge(dut.uo_out[0])
     t_falling_edge1 = cocotb.utils.get_sim_time(units="ns")
     #set the values for 0 50 and 100 % with your own spi transactions lol
     #sets to 0, now check for 0
     send_spi_transaction(dut,1,0x04,0x00)
     await ClockCycles(dut.clk, 30000)
     t_rising_edge1 = cocotb.utils.get_sim_time(units="ns")
-    await cocotb.utils.FallingEdge(dut.out)
+    await cocotb.utils.FallingEdge(dut.uo_out[0])
     t_falling_edge1 = cocotb.utils.get_sim_time(units="ns")
     high_time = t_falling_edge1 - t_rising_edge1
     assert (high_time/period) * 100 == 0
@@ -211,7 +211,7 @@ async def test_pwm_duty(dut):
     send_spi_transaction(dut,1,0x04,0x80)
     await ClockCycles(dut.clk, 30000)
     t_rising_edge1 = cocotb.utils.get_sim_time(units="ns")
-    await cocotb.utils.FallingEdge(dut.out)
+    await cocotb.utils.FallingEdge(dut.uo_out[0])
     t_falling_edge1 = cocotb.utils.get_sim_time(units="ns")
     high_time = t_falling_edge1 - t_rising_edge1
     assert (high_time/period) * 100 == 50
@@ -220,7 +220,7 @@ async def test_pwm_duty(dut):
     send_spi_transaction(dut,1,0x04,0xFF)
     await ClockCycles(dut.clk, 30000)
     t_rising_edge1 = cocotb.utils.get_sim_time(units="ns")
-    await cocotb.utils.FallingEdge(dut.out)
+    await cocotb.utils.FallingEdge(dut.uo_out[0])
     t_falling_edge1 = cocotb.utils.get_sim_time(units="ns")
     high_time = t_falling_edge1 - t_rising_edge1
     assert (high_time/period) * 100 == 100
