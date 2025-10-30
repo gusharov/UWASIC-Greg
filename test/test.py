@@ -217,7 +217,6 @@ async def test_pwm_duty(dut):
     #sets to 50%
     await ClockCycles(dut.clk, 30000)
     await ClockCycles(dut.clk, 100)
-    await RisingEdge(dut.uo_out[0])
     await rising_edge(dut, dut.uo_out[0])
     t_rising_edge1 = cocotb.utils.get_sim_time(units="ns")
     await rising_edge(dut, dut.uo_out[0])
@@ -237,12 +236,12 @@ async def test_pwm_duty(dut):
     send_spi_transaction(dut,1,0x04,0x00)
     await ClockCycles(dut.clk, 30000)
     for i in range(int(period/100)):
-        assert dut.uo_out[0].value == 0, f"PWM off, Expected 0 but got 1"
+        assert dut.uo_out[0].value == 0, "PWM off, Expected 0 but got 1"
 
     send_spi_transaction(dut,1,0x04,0xFF)
     await ClockCycles(dut.clk, 30000)
     for i in range(int(period/100)):
-        assert dut.uo_out[0].value == 1, f"PWM off, Expected 1 but got 0"    
+        assert dut.uo_out[0].value == 1, "PWM off, Expected 1 but got 0"    
     
     dut._log.info("PWM Duty Cycle test completed successfully")
 #need to make sure 3khz freuncy, and output matches the value in register 0x04 +-/1%
