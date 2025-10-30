@@ -31,8 +31,8 @@ dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
 specialdflop clk2(.D(synclock1),.clk(clk),.Q(synclock2), .past(pastclk),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(synclock2),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(synclock2),.Q(da2),.rst_n(rst_n)); 
-dflop cs1(.D(cs),.clk(synclock2),.Q(syncs1),.rst_n(rst_n));
-dflop cs2(.D(syncs1),.clk(synclock2),.Q(syncs2),.rst_n(rst_n)); 
+dflop cs1(.D(cs),.clk(clk),.Q(syncs1),.rst_n(rst_n));
+dflop cs2(.D(syncs1),.clk(clk),.Q(syncs2),.rst_n(rst_n)); 
 
 always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
@@ -66,7 +66,7 @@ always @(posedge clk or negedge rst_n) begin
     end
     else if(transaction_done == 1'b1) begin
         //check the data
-        if(counter == 16 && data[15] == 1 && data[14:8] < 5) begin
+        if(counter > 15 && data[15] == 1 && data[14:8] < 5) begin
             //confirms to let copying happen
             checking_done <= 1'b1;
         end
