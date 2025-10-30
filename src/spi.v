@@ -17,6 +17,7 @@ wire synclock1;
 wire synclock2;
 wire da1;
 wire da2;
+wire da3;
 wire syncs1;
 wire syncs2;
 reg transaction_done;
@@ -31,6 +32,7 @@ dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
 specialdflop clk2(.D(synclock1),.clk(clk),.Q(synclock2), .past(pastclk),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(clk),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(clk),.Q(da2),.rst_n(rst_n)); 
+dflop d3(.D(da2),clk(sclk),.Q(da3).rst_n(rst_n));
 dflop cs1(.D(cs),.clk(clk),.Q(syncs1),.rst_n(rst_n));
 dflop cs2(.D(syncs1),.clk(clk),.Q(syncs2),.rst_n(rst_n)); 
 
@@ -80,7 +82,7 @@ always @(posedge clk or negedge rst_n) begin
         end
     end
     else if(sampling_now == 1'b1 && syncs2 == 1'b0 && pastclk == 1'b1 && synclock2 == 1'b0) begin
-        data <= {data[14:0],da2};
+        data <= {data[14:0],da3};
         counter <= counter + 1;
     end
 
