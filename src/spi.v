@@ -31,7 +31,7 @@ dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
 dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(clk),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(clk),.Q(da2),.rst_n(rst_n)); 
-dflop d3(.D(da2),.clk(sclk),.Q(da3),.rst_n(rst_n));
+sclkdflopdflop d3(.D(da2),.clk(clk),.Q(da3),.rst_n(rst_n), .en(sclk));
 dflop cs1(.D(cs),.clk(clk),.Q(syncs1),.rst_n(rst_n));
 dflop cs2(.D(syncs1),.clk(clk),.Q(syncs2),.rst_n(rst_n)); 
 
@@ -84,7 +84,6 @@ always @(posedge clk or negedge rst_n) begin
         data <= {data[14:0],da3};
         counter <= counter + 1;
     end
-
     else if(syncs2 == 1'b1 && sampling_now == 1'b1) begin
         sampling_now <= 1'b0;
         transaction_done <= 1'b1;
@@ -125,3 +124,20 @@ end
 endmodule
 
 
+
+module sclkdflop (
+    input  D,     
+    input en,
+    input clk,
+    input rst_n,    
+    output reg Q
+);
+always @(posedge clk or negedge rst_n) begin
+    if(!rst_n) begin
+        Q <= 1'b0;
+    end
+    else if(en)
+        Q <= D;
+    end
+    else Q <= Q;
+endmodule
