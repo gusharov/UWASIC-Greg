@@ -31,7 +31,7 @@ dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
 dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(clk),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(clk),.Q(da2),.rst_n(rst_n)); 
-sclkdflop d3(.D(da2),.clk(clk),.Q(da3),.rst_n(rst_n), .en(synclock1), .en2(synclock2));
+sclkdflop d3(.D(da2),.clk(clk),.Q(da3),.rst_n(rst_n), .sclk(synclock1), .sclk2(synclock2));
 dflop cs1(.D(cs),.clk(clk),.Q(syncs1),.rst_n(rst_n));
 dflop cs2(.D(syncs1),.clk(clk),.Q(syncs2),.rst_n(rst_n)); 
 
@@ -127,8 +127,8 @@ endmodule
 
 module sclkdflop (
     input  D,     
-    input en,
-    input en2,
+    input sclk,
+    input sclk2,
     input clk,
     input rst_n,    
     output reg Q
@@ -137,7 +137,7 @@ always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         Q <= 1'b0;
     end
-    else if(en == 0 && en2 == 1) begin
+    else if(sclk == 1 && sclk2 == 0) begin
         Q <= D;
     end
 end
