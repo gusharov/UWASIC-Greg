@@ -139,5 +139,6 @@ always @(posedge clk or negedge rst_n) begin
     else if(en)
         Q <= D;
     end
-    else Q <= Q;
+    else begin Q <= Q;
+    end
 endmodule
