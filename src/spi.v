@@ -93,7 +93,14 @@ always @(posedge clk or negedge rst_n) begin
         //checks if line is low, to begin taking in data
         sampling_now <= 1'b1;
     end
-    
+    else begin
+        transaction_done <= 1'b0;
+        checking_done <= 1'b0;
+        data <= 16'b0;
+        counter <= 8'b0;
+        sampling_now <= 1'b0;
+    end
+
     
 end
 
