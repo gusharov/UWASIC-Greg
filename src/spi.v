@@ -136,9 +136,8 @@ always @(posedge clk or negedge rst_n) begin
     if(!rst_n) begin
         Q <= 1'b0;
     end
-    else if(en)
+    else if(en) begin
         Q <= D;
     end
-    else begin Q <= Q;
-    end
+end
 endmodule
