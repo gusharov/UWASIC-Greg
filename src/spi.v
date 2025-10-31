@@ -31,7 +31,7 @@ dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
 dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(clk),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(clk),.Q(da2),.rst_n(rst_n)); 
-sclkdflop d3(.D(da2),.clk(clk),.Q(da3),.rst_n(rst_n), .sclk(synclock1), .sclk2(synclock2));
+dflop d3(.D(da2),.clk(sclk),.Q(da3),.rst_n(rst_n));
 dflop cs1(.D(cs),.clk(clk),.Q(syncs1),.rst_n(rst_n));
 dflop cs2(.D(syncs1),.clk(clk),.Q(syncs2),.rst_n(rst_n)); 
 
@@ -84,6 +84,7 @@ always @(posedge clk or negedge rst_n) begin
         data <= {data[14:0],da3};
         counter <= counter + 1;
     end
+
     else if(syncs2 == 1'b1 && sampling_now == 1'b1) begin
         sampling_now <= 1'b0;
         transaction_done <= 1'b1;
@@ -92,14 +93,7 @@ always @(posedge clk or negedge rst_n) begin
         //checks if line is low, to begin taking in data
         sampling_now <= 1'b1;
     end
-    else begin
-        transaction_done <= 1'b0;
-        checking_done <= 1'b0;
-        data <= 16'b0;
-        counter <= 8'b0;
-        sampling_now <= 1'b0;
-    end
-
+    
     
 end
 
@@ -123,22 +117,3 @@ end
     
 endmodule
 
-
-
-module sclkdflop (
-    input  D,     
-    input sclk,
-    input sclk2,
-    input clk,
-    input rst_n,    
-    output reg Q
-);
-always @(posedge clk or negedge rst_n) begin
-    if(!rst_n) begin
-        Q <= 1'b0;
-    end
-    else if(sclk == 1 && sclk2 == 0) begin
-        Q <= D;
-    end
-end
-endmodule
