@@ -31,7 +31,7 @@ dflop clk1(.D(sclk),.clk(clk),.Q(synclock1),.rst_n(rst_n));
 dflop clk2(.D(synclock1),.clk(clk),.Q(synclock2),.rst_n(rst_n)); 
 dflop d1(.D(sdi),.clk(clk),.Q(da1),.rst_n(rst_n));
 dflop d2(.D(da1),.clk(clk),.Q(da2),.rst_n(rst_n)); 
-sclkdflopdflop d3(.D(da2),.clk(clk),.Q(da3),.rst_n(rst_n), .en(sclk));
+sclkdflop d3(.D(da2),.clk(clk),.Q(da3),.rst_n(rst_n), .en(synclock1));
 dflop cs1(.D(cs),.clk(clk),.Q(syncs1),.rst_n(rst_n));
 dflop cs2(.D(syncs1),.clk(clk),.Q(syncs2),.rst_n(rst_n)); 
 
